@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LNFreezerAPI.Migrations
 {
     [DbContext(typeof(LNFreezerApiContext))]
-    [Migration("20231211004443_Initial")]
+    [Migration("20231211014930_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,8 +26,8 @@ namespace LNFreezerAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("BoxAlpha")
-                        .HasColumnType("int");
+                    b.Property<string>("BoxAlpha")
+                        .HasColumnType("longtext");
 
                     b.Property<int>("RackId")
                         .HasColumnType("int");
@@ -35,6 +35,14 @@ namespace LNFreezerAPI.Migrations
                     b.HasKey("BoxId");
 
                     b.ToTable("Boxes");
+
+                    b.HasData(
+                        new
+                        {
+                            BoxId = 1,
+                            BoxAlpha = "A",
+                            RackId = 1
+                        });
                 });
 
             modelBuilder.Entity("LNFreezerApi.Models.Freezer", b =>
@@ -49,6 +57,23 @@ namespace LNFreezerAPI.Migrations
                     b.HasKey("FreezerId");
 
                     b.ToTable("Freezers");
+
+                    b.HasData(
+                        new
+                        {
+                            FreezerId = 1,
+                            FreezerNum = 1
+                        },
+                        new
+                        {
+                            FreezerId = 2,
+                            FreezerNum = 2
+                        },
+                        new
+                        {
+                            FreezerId = 3,
+                            FreezerNum = 3
+                        });
                 });
 
             modelBuilder.Entity("LNFreezerApi.Models.Rack", b =>
@@ -66,6 +91,32 @@ namespace LNFreezerAPI.Migrations
                     b.HasKey("RackId");
 
                     b.ToTable("Racks");
+
+                    b.HasData(
+                        new
+                        {
+                            RackId = 1,
+                            FreezerId = 1,
+                            RackNum = 1
+                        },
+                        new
+                        {
+                            RackId = 6,
+                            FreezerId = 1,
+                            RackNum = 6
+                        },
+                        new
+                        {
+                            RackId = 50,
+                            FreezerId = 5,
+                            RackNum = 30
+                        },
+                        new
+                        {
+                            RackId = 10,
+                            FreezerId = 7,
+                            RackNum = 30
+                        });
                 });
 
             modelBuilder.Entity("LNFreezerApi.Models.Specimen", b =>

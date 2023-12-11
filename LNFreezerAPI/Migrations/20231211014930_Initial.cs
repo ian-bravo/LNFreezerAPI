@@ -18,7 +18,8 @@ namespace LNFreezerAPI.Migrations
                 {
                     BoxId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    BoxAlpha = table.Column<int>(type: "int", nullable: false),
+                    BoxAlpha = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     RackId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -77,6 +78,32 @@ namespace LNFreezerAPI.Migrations
                     table.PrimaryKey("PK_Specimens", x => x.SpecimenId);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.InsertData(
+                table: "Boxes",
+                columns: new[] { "BoxId", "BoxAlpha", "RackId" },
+                values: new object[] { 1, "A", 1 });
+
+            migrationBuilder.InsertData(
+                table: "Freezers",
+                columns: new[] { "FreezerId", "FreezerNum" },
+                values: new object[,]
+                {
+                    { 1, 1 },
+                    { 2, 2 },
+                    { 3, 3 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Racks",
+                columns: new[] { "RackId", "FreezerId", "RackNum" },
+                values: new object[,]
+                {
+                    { 1, 1, 1 },
+                    { 6, 1, 6 },
+                    { 10, 7, 30 },
+                    { 50, 5, 30 }
+                });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
