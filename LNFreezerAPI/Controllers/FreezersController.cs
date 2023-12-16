@@ -17,12 +17,24 @@ namespace LNFreezerApi.Controllers
 
     //GET: api/freezers
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Freezer>>> Get()
+    public async Task<ActionResult<IEnumerable<Freezer>>> Get([FromQuery] int? freezerNum)
     {
       IQueryable<Freezer> query = _db.Freezers.AsQueryable();
 
-      return await _db.Freezers.ToListAsync();
+      if (freezerNum.HasValue)
+      {
+        query = query.Where(entry => entry.FreezerNum == freezerNum.Value);
+      }
+
+      return await query.ToListAsync();
     }
+    // [HttpGet]
+    // public async Task<ActionResult<IEnumerable<Freezer>>> Get()
+    // {
+    //   IQueryable<Freezer> query = _db.Freezers.AsQueryable();
+
+    //   return await _db.Freezers.ToListAsync();
+    // }
 
     //GET: api/freezers/{id}
     [HttpGet("{id}")]
