@@ -46,5 +46,39 @@ namespace LNFreezerApi.Controllers
       await _db.SaveChangesAsync();
       return CreatedAtAction(nameof(GetFreezer), new { id = freezer.FreezerId }, freezer);
     }
+
+    //PUT: api/freezers/{id}
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Put(int id, Freezer freezer)
+    {
+      if (id != freezer.FreezerId)
+      {
+        return BadRequest();
+      }
+
+      _db.Freezers.Update(freezer);
+
+      try
+      {
+        await _db.SaveChangesAsync();
+      }
+      catch (DbUpdateConcurrencyException)
+      {
+        if (!FreezerExists(id))
+        {
+          return NotFound();
+        }
+        else
+        {
+          throw;
+        }
+      }
+      return NoContent();
+    }
+
+    private bool FreezerExists(int id)
+    {
+      return _db.Freezers.Any(entry => entry.FreezerId == id);
+    }
   }
 }
