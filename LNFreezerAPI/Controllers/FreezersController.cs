@@ -16,13 +16,13 @@ namespace LNFreezerApi.Controllers
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Freezer>>> Get(int freezerNum)
+    public async Task<ActionResult<IEnumerable<Freezer>>> Get([FromQuery] int? freezerNum)
     {
       IQueryable<Freezer> query = _db.Freezers.AsQueryable();
 
-      if (freezerNum != 0)
+      if (freezerNum.HasValue)
       {
-        query = query.Where(entry => entry.FreezerNum = freezerNum);
+        query = query.Where(entry => entry.FreezerNum == freezerNum.Value);
       }
 
       return await query.ToListAsync();
