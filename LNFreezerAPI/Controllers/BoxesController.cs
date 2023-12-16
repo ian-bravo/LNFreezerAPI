@@ -47,5 +47,14 @@ namespace LNFreezerApi.Controllers
 
       return box;
     }
+
+    //POST: api/boxes
+    [HttpPost]
+    public async Task<ActionResult<Box>> Post(Box box)
+    {
+      _db.Boxes.Add(box);
+      await _db.SaveChangesAsync();
+      return CreatedAtAction(nameof(GetBox), new { id = box.BoxId }, box);
+    }
   }
 }
