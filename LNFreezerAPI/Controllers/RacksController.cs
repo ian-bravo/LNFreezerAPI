@@ -47,5 +47,14 @@ namespace LNFreezerApi.Controllers
 
       return rack;
     }
+
+    //POST: api/racks
+    [HttpPost]
+    public async Task<ActionResult<Rack>> Post(Rack rack)
+    {
+      _db.Racks.Add(rack);
+      await _db.SaveChangesAsync();
+      return CreatedAtAction(nameof(GetRack), new { id = rack.RackId }, rack);
+    }
   }
 }
