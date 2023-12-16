@@ -90,5 +90,21 @@ namespace LNFreezerApi.Controllers
     {
       return _db.Racks.Any(entry => entry.RackId == id);
     }
+
+    //DELETE: api/racks/{id}
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteRack(int id)
+    {
+      Rack rack = await _db.Racks.FindAsync(id);
+      if (rack == null)
+      {
+        return NotFound();
+      }
+
+      _db.Racks.Remove(rack);
+      await _db.SaveChangesAsync();
+
+      return NoContent();
+    }
   }
 }
