@@ -56,5 +56,39 @@ namespace LNFreezerApi.Controllers
       await _db.SaveChangesAsync();
       return CreatedAtAction(nameof(GetRack), new { id = rack.RackId }, rack);
     }
+
+    //PUT: api/racks/{id}
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Put(int id, Rack rack)
+    {
+      if (id != rack.RackId)
+      {
+        return BadRequest();
+      }
+
+      _db.Racks.Update(rack);
+
+      try
+      {
+        await _db.SaveChangesAsync();
+      }
+      catch (DbUpdateConcurrencyException)
+      {
+        if (!RackExists(id))
+        {
+          return NotFound();
+        }
+        else
+        {
+          throw;
+        }
+      }
+      return NoContent();
+    }
+
+    private bool RackExists(int id)
+    {
+      return _db.Racks.Any(entry => entry.RackId == id);
+    }
   }
 }

@@ -92,6 +92,7 @@ namespace LNFreezerApi.Controllers
     {
       return _db.Freezers.Any(entry => entry.FreezerId == id);
     }
+    
     //DELETE: api/freezers/{id}
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteFreezer(int id)
