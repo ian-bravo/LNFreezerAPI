@@ -37,10 +37,11 @@ namespace LNFreezerApi.Models
         );
       builder.Entity<Specimen>()
         .HasData(
-          new Specimen { SpecimenId = 1, SpecimenNum = 1, Cohort = "PC475", NHPNum = 32283, Date = 051422, Tissue = "BM", Quantity = "2e6", BoxId = 1 },
-          new Specimen { SpecimenId = 4, SpecimenNum = 4, Cohort = "PC475", NHPNum = 33887, Date = 052122, Tissue = "PBMC", Quantity = "8e6", BoxId = 4 },
-          new Specimen { SpecimenId = 10, SpecimenNum = 10, Cohort = "PC498", NHPNum = 29396, Date = 091722, Tissue = "PBMC", Quantity = "15e6", BoxId = 20 },
-          new Specimen { SpecimenId = 82, SpecimenNum = 1, Cohort = "PC521", NHPNum = 34331, Date = 062123, Tissue = "P.LN", Quantity = "8e6", BoxId = 39 }
+          new Specimen { SpecimenId = 1, SpecimenNum = 1, Cohort = "PC475", NHPNum = 32283, Date = "051422", Tissue = "BM", Quantity = "2e6", BoxId = 1 },
+          new Specimen { SpecimenId = 4, SpecimenNum = 4, Cohort = "PC475", NHPNum = 33887, Date = "052122", Tissue = "PBMC", Quantity = "8e6", BoxId = 4 },
+          new Specimen { SpecimenId = 10, SpecimenNum = 10, Cohort = "PC498", NHPNum = 29396, Date = "091722", Tissue = "PBMC", Quantity = "15e6", BoxId = 20 },
+          new Specimen { SpecimenId = 82, SpecimenNum = 1, Cohort = "PC521", NHPNum = 34331, Date = "062123", Tissue = "P.LN", Quantity = "8e6", BoxId = 39 },
+          new Specimen { SpecimenId = 100, SpecimenNum = 81, Cohort = "PC521", NHPNum = 34331, Date = "062823", Tissue = "P.LN", Quantity = "7e6", BoxId = 39 }
         );
     }
   }
