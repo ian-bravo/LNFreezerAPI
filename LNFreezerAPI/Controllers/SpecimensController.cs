@@ -77,5 +77,39 @@ namespace LNFreezerApi.Controllers
       return CreatedAtAction(nameof(GetSpecimen), new { id = specimen.SpecimenId }, specimen);
     }
 
+    //PUT: api/specimens/{id}
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Put(int id, Specimen specimen)
+    {
+      if (id != specimen.SpecimenId)
+      {
+        return BadRequest();
+      }
+
+      _db.Specimens.Update(specimen);
+
+      try
+      {
+        await _db.SaveChangesAsync();
+      }
+      catch (DbUpdateConcurrencyException)
+      {
+        if (!SpecimenExists(id))
+        {
+          return NotFound();
+        }
+        else
+        {
+          throw;
+        }
+      }
+      return NoContent();
+    }
+
+    private bool SpecimenExists(int id)
+    {
+      return _db.Specimens.Any(entry => entry.SpecimenId == id);
+    }
+
   }
 }
