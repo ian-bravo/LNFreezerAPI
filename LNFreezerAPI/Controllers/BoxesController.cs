@@ -56,5 +56,39 @@ namespace LNFreezerApi.Controllers
       await _db.SaveChangesAsync();
       return CreatedAtAction(nameof(GetBox), new { id = box.BoxId }, box);
     }
+
+    //PUT: api/boxes/{id}
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Put(int id, Box box)
+    {
+      if (id != box.BoxId)
+      {
+        return BadRequest();
+      }
+
+      _db.Boxes.Update(box);
+
+      try
+      {
+        await _db.SaveChangesAsync();
+      }
+      catch (DbUpdateConcurrencyException)
+      {
+        if (!BoxExists(id))
+        {
+          return NotFound();
+        }
+        else
+        {
+          throw;
+        }
+      }
+      return NoContent();
+    }
+
+    private bool BoxExists(int id)
+    {
+      return _db.Boxes.Any(entry => entry.BoxId == id);
+    }
   }
 }
