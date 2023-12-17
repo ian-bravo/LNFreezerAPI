@@ -90,5 +90,21 @@ namespace LNFreezerApi.Controllers
     {
       return _db.Boxes.Any(entry => entry.BoxId == id);
     }
+
+    //DELETE: api/boxes/{id}
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteBox(int id)
+    {
+      Box box = await _db.Boxes.FindAsync(id);
+      if (box == null)
+      {
+        return NotFound();
+      }
+
+      _db.Boxes.Remove(box);
+      await _db.SaveChangesAsync();
+
+      return NoContent();
+    }
   }
 }
