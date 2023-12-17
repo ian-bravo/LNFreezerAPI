@@ -111,5 +111,21 @@ namespace LNFreezerApi.Controllers
       return _db.Specimens.Any(entry => entry.SpecimenId == id);
     }
 
+    //DELETE: api/specimens/{id}
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteSpecimen(int id)
+    {
+      Specimen specimen = await _db.Specimens.FindAsync(id);
+      if (specimen == null)
+      {
+        return NotFound();
+      }
+
+      _db.Specimens.Remove(specimen);
+      await _db.SaveChangesAsync();
+
+      return NoContent();
+    }
+
   }
 }
