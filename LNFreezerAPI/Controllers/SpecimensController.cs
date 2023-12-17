@@ -17,7 +17,7 @@ namespace LNFreezerApi.Controllers
 
     //GET: api/specimens
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Specimen>>> Get([FromQuery] int? specimenNum, string cohort, [FromQuery] int? nHPNum, [FromQuery] int? date, string tissue, string quantity, [FromQuery] int? boxId)
+    public async Task<ActionResult<IEnumerable<Specimen>>> Get([FromQuery] int? specimenNum, string cohort, [FromQuery] int? nHPNum, string date, string tissue, string quantity, [FromQuery] int? boxId)
     {
       IQueryable<Specimen> query = _db.Specimens.AsQueryable();
 
@@ -36,9 +36,9 @@ namespace LNFreezerApi.Controllers
         query = query.Where(entry => entry.NHPNum == nHPNum.Value);
       }
 
-      if (date.HasValue)
+      if (date != null)
       {
-        query = query.Where(entry => entry.Date == date.Value);
+        query = query.Where(entry => entry.Date == date);
       }
 
       if (tissue != null)
@@ -66,6 +66,15 @@ namespace LNFreezerApi.Controllers
       }
 
       return specimen;
+    }
+
+    //POST: api/specimens
+    [HttpPost]
+    public async Task<ActionResult<Specimen>> Post(Specimen specimen)
+    {
+      _db.Specimens.Add(specimen);
+      await _db.SaveChangesAsync();
+      return CreatedAtAction(nameof(GetSpecimen), new { id = specimen.SpecimenId }, specimen);
     }
 
   }
