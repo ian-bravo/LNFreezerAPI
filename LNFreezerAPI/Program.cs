@@ -20,6 +20,17 @@ builder.Services.AddDbContext<LNFreezerApiContext>(
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+      {
+        options.AddDefaultPolicy(
+            policy =>
+            {
+              policy.AllowAnyOrigin();
+              policy.AllowAnyHeader();
+              policy.AllowAnyMethod();
+            });
+      });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -32,6 +43,8 @@ else
 {
   app.UseHttpsRedirection();
 }
+
+app.UseCors();
 
 app.UseAuthorization();
 
