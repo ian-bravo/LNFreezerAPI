@@ -17,7 +17,7 @@ namespace LNFreezerApi.Controllers
 
     //GET: api/boxes
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Box>>> Get(string boxAlpha, [FromQuery] int? rackId)
+    public async Task<ActionResult<PaginatedList<Box>>> Get(string boxAlpha, [FromQuery] int? rackId, [FromQuery] int? pageIndex, [FromQuery] int? pageSize)
     {
       IQueryable<Box> query = _db.Boxes.AsQueryable();
 
@@ -31,7 +31,20 @@ namespace LNFreezerApi.Controllers
         query = query.Where(entry => entry.RackId == rackId.Value);
       }
 
-      return await query.ToListAsync();
+      // Pagination
+      if (pageIndex.HasValue && pageSize.HasValue)
+      {
+        int pageNumber = pageIndex.Value > 0 ? pageIndex.Value : 1;
+        int itemsPerPage = pageSize.Value > 0 ? pageSize.Value : 2;
+
+        var paginatedList = await PaginatedList<Box>.CreateAsync(query, pageNumber, itemsPerPage);
+
+        return Ok(paginatedList);
+      }
+
+      // If no pagination parameters provided, return the entire list
+      var allBoxes = await query.ToListAsync();
+      return Ok(allBoxes);
     }
 
     //GET: api/boxes/{id}
