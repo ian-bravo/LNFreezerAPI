@@ -17,7 +17,7 @@ namespace LNFreezerApi.Controllers
 
     //GET: api/racks
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Rack>>> Get([FromQuery] int? rackNum, [FromQuery]  int? freezerId)
+    public async Task<ActionResult<PaginatedList<Rack>>> Get([FromQuery] int? rackNum, [FromQuery] int? freezerId, [FromQuery] int? pageIndex, [FromQuery] int? pageSize)    
     {
       IQueryable<Rack> query = _db.Racks.AsQueryable();
 
@@ -31,7 +31,20 @@ namespace LNFreezerApi.Controllers
         query = query.Where(entry => entry.FreezerId == freezerId.Value);
       }
 
-      return await query.ToListAsync();
+      // Pagination
+      if (pageIndex.HasValue && pageSize.HasValue)
+      {
+        int pageNumber = pageIndex.Value > 0 ? pageIndex.Value : 1;
+        int itemsPerPage = pageSize.Value > 0 ? pageSize.Value : 2;
+
+        var paginatedList = await PaginatedList<Rack>.CreateAsync(query, pageNumber, itemsPerPage);
+
+        return Ok(paginatedList);
+      }
+
+      // If no pagination parameters provided, return the entire list
+      var allRacks = await query.ToListAsync();
+      return Ok(allRacks);
     }
 
     //GET: api/racks/{id}
