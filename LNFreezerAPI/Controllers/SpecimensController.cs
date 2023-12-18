@@ -17,7 +17,7 @@ namespace LNFreezerApi.Controllers
 
     //GET: api/specimens
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Specimen>>> Get([FromQuery] int? specimenNum, string cohort, [FromQuery] int? nHPNum, string date, string tissue, string quantity, [FromQuery] int? boxId)
+    public async Task<ActionResult<PaginatedList<Specimen>>> Get([FromQuery] int? specimenNum, string cohort, [FromQuery] int? nHPNum, string date, string tissue, string quantity, [FromQuery] int? boxId, [FromQuery] int? pageIndex, [FromQuery] int? pageSize)
     {
       IQueryable<Specimen> query = _db.Specimens.AsQueryable();
 
@@ -51,7 +51,20 @@ namespace LNFreezerApi.Controllers
         query = query.Where(entry => entry.Quantity == quantity);
       }
 
-      return await query.ToListAsync();
+      // Pagination
+      if (pageIndex.HasValue && pageSize.HasValue)
+      {
+        int pageNumber = pageIndex.Value > 0 ? pageIndex.Value : 1;
+        int itemsPerPage = pageSize.Value > 0 ? pageSize.Value : 2;
+
+        var paginatedList = await PaginatedList<Specimen>.CreateAsync(query, pageNumber, itemsPerPage);
+
+        return Ok(paginatedList);
+      }
+
+      // If no pagination parameters provided, return the entire list
+      var allSpecimens = await query.ToListAsync();
+      return Ok(allSpecimens);
     }
 
     //GET: api/specimens/{id}
