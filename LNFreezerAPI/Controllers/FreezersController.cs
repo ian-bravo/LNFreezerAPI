@@ -17,7 +17,7 @@ namespace LNFreezerApi.Controllers
 
     //GET: api/freezers
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Freezer>>> Get([FromQuery] int? freezerNum)
+    public async Task<ActionResult<PaginatedList<Freezer>>> Get([FromQuery] int? freezerNum, [FromQuery] int? pageIndex, [FromQuery] int? pageSize)
     {
       IQueryable<Freezer> query = _db.Freezers.AsQueryable();
 
@@ -26,7 +26,20 @@ namespace LNFreezerApi.Controllers
         query = query.Where(entry => entry.FreezerNum == freezerNum.Value);
       }
 
-      return await query.ToListAsync();
+      // Pagination
+      if (pageIndex.HasValue && pageSize.HasValue)
+      {
+        int pageNumber = pageIndex.Value > 0 ? pageIndex.Value : 1;
+        int itemsPerPage = pageSize.Value > 0 ? pageSize.Value : 2;
+
+        var paginatedList = await PaginatedList<Freezer>.CreateAsync(query, pageNumber, itemsPerPage);
+
+        return Ok(paginatedList);
+      }
+
+      // If no pagination parameters provided, return the entire list
+      var allFreezers = await query.ToListAsync();
+      return Ok(allFreezers);
     }
     // [HttpGet]
     // public async Task<ActionResult<IEnumerable<Freezer>>> Get()
