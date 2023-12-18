@@ -41,14 +41,6 @@ namespace LNFreezerApi.Controllers
       var allFreezers = await query.ToListAsync();
       return Ok(allFreezers);
     }
-    
-    // [HttpGet]
-    // public async Task<ActionResult<IEnumerable<Freezer>>> Get()
-    // {
-    //   IQueryable<Freezer> query = _db.Freezers.AsQueryable();
-
-    //   return await _db.Freezers.ToListAsync();
-    // }
 
     //GET: api/freezers/{id}
     [HttpGet("{id}")]
