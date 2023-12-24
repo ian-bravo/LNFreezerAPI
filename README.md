@@ -10,6 +10,12 @@
 * [Description](#description)
 * [Setup and Installation Requirements](#setup-and-installation-requirements)
 * [API Documentation](#api-documentation)
+  * [Freezers](#freezers)
+  * [Racks](#racks)
+  * [Boxes](#boxes)
+  * [Specimens](#specimens)
+* [Known Bugs](#known-bugs)
+* [License](#license)
 
 ## [Technologies Used](#technologies-used)
 
@@ -104,7 +110,7 @@ DELETE /api/{component}/{id}
 ```
 ----------------------------------------------------------------
 
-## Freezers
+## [Freezers](#freezers)
 
 #### GET Http Requests:
 ```
@@ -124,18 +130,18 @@ http://localhost:5000/api/freezers
 
 #### Sample GET JSON Response:
 ```json
-    {
-        "freezerId": 1,
-        "freezerNum": 1
-    },
-    {
-        "freezerId": 2,
-        "freezerNum": 2
-    },
-    {
-        "freezerId": 3,
-        "freezerNum": 3
-    }
+{
+    "freezerId": 1,
+    "freezerNum": 1
+},
+{
+    "freezerId": 2,
+    "freezerNum": 2
+},
+{
+    "freezerId": 3,
+    "freezerNum": 3
+}
 ```
 ----------------------------------------------------------------
 #### POST Http Requests:
@@ -175,7 +181,7 @@ PUT http://localhost:5000/api/freezers/{id}
 | Parameter | Type | Default | Required | Description |
 | :---: | :---: | :---: | :---: | --- |
 | freezerId | int | none | true | Assigned Id to freezer.
-| freezerNum | int | none | true | Updates freezer number.
+| freezerNum | int | none | true | Updates the freezer number.
 
 #### Example PUT request:
 ```
@@ -217,7 +223,7 @@ http://localhost:5000/api/freezers/4/
 
 ----------------------------------------------------------------
 
-## Racks
+## [Racks](#racks)
 
 #### GET Http Requests:
 ```
@@ -238,21 +244,21 @@ http://localhost:5000/api/racks
 
 #### Sample GET JSON Response:
 ```json
-    {
-        "rackId": 1,
-        "rackNum": 1,
-        "freezerId": 1
-    },
-    {
-        "rackId": 6,
-        "rackNum": 6,
-        "freezerId": 1
-    },
-    {
-        "rackId": 10,
-        "rackNum": 30,
-        "freezerId": 7
-    }
+{
+    "rackId": 1,
+    "rackNum": 1,
+    "freezerId": 1
+},
+{
+    "rackId": 6,
+    "rackNum": 6,
+    "freezerId": 1
+},
+{
+    "rackId": 10,
+    "rackNum": 30,
+    "freezerId": 7
+}
 ```
 ----------------------------------------------------------------
 #### POST Http Requests:
@@ -264,7 +270,7 @@ POST http://localhost:5000/api/racks
 | Parameter | Type | Default | Required | Description |
 | :---: | :---: | :---: | :---: | --- |
 | rackNum | int | none | true | Creates a rack number.
-| freezerId | int | none | false | Creates a rack's freezer Id.
+| freezerId | int | none | true | Creates a rack's freezer Id.
 
 #### Example POST:
 ```
@@ -295,7 +301,8 @@ PUT http://localhost:5000/api/racks/{id}
 | Parameter | Type | Default | Required | Description |
 | :---: | :---: | :---: | :---: | --- |
 | rackId | int | none | true | Assigned Id to rack.
-| rackNum | int | none | true | Updates rack number.
+| rackNum | int | none | true | Updates the rack number.
+| freezerId | int | none | true | Updates the rack's freezer Id.
 
 #### Example PUT request:
 ```
@@ -304,7 +311,8 @@ http://localhost:5000/api/racks/4/
 ```json
 {
     "rackId": 4,
-    "rackNum": 7
+    "rackNum": 4,
+    "freezerId": 10
 }
 ```
 
@@ -337,141 +345,302 @@ http://localhost:5000/api/racks/4/
 
 ----------------------------------------------------------------
 
-## Dogs
+## [Boxes](#boxes)
 
 #### GET Http Requests:
 ```
-GET http://localhost:5000/api/dogs
-GET http://localhost:5000/api/dogs/{id}
+GET http://localhost:5000/api/boxes
+GET http://localhost:5000/api/boxes/{id}
 ```
 
 #### Optional GET Path Parameters:
 | Parameter | Type | Default | Required | Description |
 | :---: | :---: | :---: | :---: | --- |
-| name | string | none | false | Return matches by name.
-| size | string | none | false | Return any dog by size description. |
-| sex | string | none | false | Return any dog by sex. |
-| minimumAge* | int | none | false | Return any dog with a minimum age. |
-*search query for age
+| boxAlpha | string | none | false | Return matches by box number.
+| rackId | int | none | false | Returns matches by boxes's rack Id.
 
 #### Example GET query:
 ```
-http://localhost:5000/api/dogs?sex=Female&minimumAge=5
+http://localhost:5000/api/boxes
 ```
 
 #### Sample GET JSON Response:
-```
-[
-    {
-        "dogId": 1,
-        "name": "Beatrice",
-        "size": "Large",
-        "sex": "Female",
-        "age": 5
-    },
-    {
-        "dogId": 5,
-        "name": "Jessica",
-        "size": "Medium",
-        "sex": "Female",
-        "age": 7
-    }
-]
+```json
+{
+    "boxId": 1,
+    "boxAlpha": "A",
+    "rackId": 1
+},
+{
+    "boxId": 20,
+    "boxAlpha": "A",
+    "rackId": 45
+},
+{
+    "boxId": 25,
+    "boxAlpha": "C",
+    "rackId": 3
+}
 ```
 ----------------------------------------------------------------
-
 #### POST Http Requests:
 ```
-POST http://localhost:5000/api/dogs
+POST http://localhost:5000/api/boxes
 ```
 
 #### POST Path Parameters:
 | Parameter | Type | Default | Required | Description |
 | :---: | :---: | :---: | :---: | --- |
-| name | string | none | true | Creates a name.
-| size | string | none | true | Creates a size description. |
-| sex | string | none | true | Creates a sex description. |
-| age | int | none | false | Creates an age description. Defaults the age to zero. |
+| boxAlpha | int | none | true | Creates a box number.
+| rackId | int | none | true | Creates a boxes's rack Id.
 
 #### Example POST:
 ```
-http://localhost:5000/api/dogs/
+http://localhost:5000/api/boxes/
 ```
-```
+```json
 {
-    "name": "Bumblebee",
-    "size": "Small",
-    "sex": "Male",
-    "age": 1
+    "boxAlpha": "D",
+    "rackId": 8
 }
 ```
 
 #### Sample POST JSON Response:
-```
+```json
 {
-    "dogId": 11,
-    "name": "Bumblebee",
-    "size": "Small",
-    "sex": "Male",
-    "age": 1
+    "boxId": 30,
+    "boxAlpha": "D",
+    "rackId": 8
 }
 ```
 ----------------------------------------------------------------
+
 #### PUT Http Requests:
 ```
-PUT http://localhost:5000/api/dogs/{id}
+PUT http://localhost:5000/api/boxes/{id}
 ```
 
 #### PUT Path Parameters:
 | Parameter | Type | Default | Required | Description |
 | :---: | :---: | :---: | :---: | --- |
-| dogId | int | none | true | Assigned Id to animal.
-| name | string | none | true | Updates name.
-| size | string | none | true | Updates size description. |
-| sex | string | none | true | Updates sex description. |
-| age | int | none | false | Updates an age description. Defaults to zero if left blank. |
+| boxId | int | none | true | Assigned Id to box.
+| boxAlpha | int | none | true | Updates the box number.
+| rackId | int | none | true | Updates the boxes's rack Id.
 
 #### Example PUT request:
 ```
-http://localhost:5000/api/dogs/11/
+http://localhost:5000/api/boxes/30/
 ```
-```
+```json
 {
-    "dogId": 11,
-    "name": "Bumblebee",
-    "size": "Large",
-    "sex": "Female",
-    "age": 12
+    "boxId": 30,
+    "boxAlpha": "E",
+    "rackId": 10
 }
 ```
 
 #### Sample PUT Response:
-```
+```json
 204 No Content. The server successfully processed the request, but is not returning any content.
 ```
+
 ----------------------------------------------------------------
 
 #### DELETE Http Requests:
 ```
-DELETE http://localhost:5000/api/dogs/{id}
+DELETE http://localhost:5000/api/boxes/{id}
 ```
 
 #### DELETE Path Parameters:
 | Parameter | Type | Default | Required | Description |
 | :---: | :---: | :---: | :---: | --- |
-| dogId | int | none | true | Assigned Id to animal.
+| boxId | int | none | true | Assigned Id to box.
 
 #### Example DELETE request:
 ```
-http://localhost:5000/api/dogs/11/
+http://localhost:5000/api/boxes/30/
 ```
 
 #### Sample DELETE Response:
-```
+```json
 204 No Content. The server successfully processed the request, but is not returning any content.
 ```
 
-## License
+----------------------------------------------------------------
+
+## [Specimens](#specimens)
+
+#### GET Http Requests:
+```
+GET http://localhost:5000/api/specimens
+GET http://localhost:5000/api/specimens/{id}
+```
+
+#### Optional GET Path Parameters:
+| Parameter | Type | Default | Required | Description |
+| :---: | :---: | :---: | :---: | --- |
+| specimenNum | int | none | false | Return matches by specimen number.
+| cohort | string | none | false | Returns matches by cohort.
+| nHPNum | int | none | false | Return matches by NHP number.
+| date | string | none | false | Return matches by date.
+| tissue | string | none | false | Return matches by tissue.
+| quantity | string | none | false | Return matches quantity.
+| boxId | int | none | false | Return matches by specimen's box ID.
+
+
+#### Example GET query:
+```
+http://localhost:5000/api/specimens
+```
+
+#### Sample GET JSON Response:
+```json
+{
+    "specimenId": 1,
+    "specimenNum": 1,
+    "cohort": "PC475",
+    "nhpNum": 32283,
+    "date": "051422",
+    "tissue": "BM",
+    "quantity": "2e6",
+    "boxId": 1
+},
+{
+    "specimenId": 4,
+    "specimenNum": 4,
+    "cohort": "PC475",
+    "nhpNum": 33887,
+    "date": "052122",
+    "tissue": "PBMC",
+    "quantity": "8e6",
+    "boxId": 4
+},
+{
+    "specimenId": 10,
+    "specimenNum": 10,
+    "cohort": "PC498",
+    "nhpNum": 29396,
+    "date": "091722",
+    "tissue": "PBMC",
+    "quantity": "15e6",
+    "boxId": 20
+}
+```
+----------------------------------------------------------------
+
+#### POST Http Requests:
+```
+POST http://localhost:5000/api/specimens
+```
+
+#### POST Path Parameters:
+| Parameter | Type | Default | Required | Description |
+| :---: | :---: | :---: | :---: | --- |
+| specimenNum | int | none | true | Creates specimen number.
+| cohort | string | none | true | Creates cohort.
+| nHPNum | int | none | true | Creates NHP number.
+| date | string | none | true | Creates date.
+| tissue | string | none | true | Creates tissue.
+| quantity | string | none | true | Creates quantity.
+| boxId | int | none | true | Creates specimen's box ID.
+
+#### Example POST:
+```
+http://localhost:5000/api/specimens/
+```
+```json
+{
+    "specimenNum": 1,
+    "cohort": "PC521",
+    "nhpNum": 34331,
+    "date": "062123",
+    "tissue": "P.LN",
+    "quantity": "8e6",
+    "boxId": 39
+}
+```
+
+#### Sample POST JSON Response:
+```json
+{
+    "specimenId": 82,
+    "specimenNum": 1,
+    "cohort": "PC521",
+    "nhpNum": 34331,
+    "date": "062123",
+    "tissue": "P.LN",
+    "quantity": "8e6",
+    "boxId": 39
+}
+```
+----------------------------------------------------------------
+#### PUT Http Requests:
+```
+PUT http://localhost:5000/api/specimens/{id}
+```
+
+#### PUT Path Parameters:
+| Parameter | Type | Default | Required | Description |
+| :---: | :---: | :---: | :---: | --- |
+| specimenId | int | none | true | Assigned ID to specimen.
+| specimenNum | int | none | true | Updates specimen number.
+| cohort | string | none | true | Updates cohort.
+| nHPNum | int | none | true | Updates NHP number.
+| date | string | none | true | Updates date.
+| tissue | string | none | true | Updates tissue.
+| quantity | string | none | true | Updates quantity.
+| boxId | int | none | true | Updates specimen's box ID.
+
+#### Example PUT request:
+```
+http://localhost:5000/api/specimens/82/
+```
+```json
+{
+    "specimenId": 82,
+    "specimenNum": 30,
+    "cohort": "PC521",
+    "nhpNum": 34331,
+    "date": "062123",
+    "tissue": "P.LN",
+    "quantity": "8e6",
+    "boxId": 39
+}
+```
+
+#### Sample PUT Response:
+```json
+204 No Content. The server successfully processed the request, but is not returning any content.
+```
+
+----------------------------------------------------------------
+
+#### DELETE Http Requests:
+```
+DELETE http://localhost:5000/api/specimens/{id}
+```
+
+#### DELETE Path Parameters:
+| Parameter | Type | Default | Required | Description |
+| :---: | :---: | :---: | :---: | --- |
+| specimenId | int | none | true | Assigned Id to specimen.
+
+#### Example DELETE request:
+```
+http://localhost:5000/api/specimens/82/
+```
+
+#### Sample DELETE Response:
+```json
+204 No Content. The server successfully processed the request, but is not returning any content.
+```
+
+----------------------------------------------------------------
+
+## [Known Bugs](#known-bugs)
+* _No known bugs_
+
+## [License](#license)
 
 MIT License  
 
